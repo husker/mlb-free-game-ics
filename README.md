@@ -6,8 +6,9 @@ Calendar subscription feed for MLB.TV Free Game of the Day
 This Node.js server creates a live, auto-updating iCalendar (`.ics`) feed for the MLB.TV Free Game of the Day schedule. You can subscribe to this feed using any standard calendar application (like Google Calendar, Apple Calendar, or Outlook) to always have the latest schedule of free games automatically synced to your calendar.
 
 ## Live Demo
-A feed you can subscribe to is deplyed on Render at this URL:
-[Free Game of the Day ics](https://mlb-free-game-ics.onrender.com/mlb-free-games.ics)
+
+A feed you can subscribe to is available at this URL:
+[MLB.TV Free Game of the Day ics](https://mlb-free-game-ics.onrender.com/mlb-free-games.ics)
 
 ## Features
 
