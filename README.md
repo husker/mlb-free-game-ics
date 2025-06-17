@@ -63,6 +63,13 @@ A feed you can subscribe to is available at this URL:
     -   Select **From URL**.
     -   Paste the feed URL (`http://localhost:3000/mlb-free-games.ics` or your public URL) into the field and click **Add calendar**.
 
+    **To add the feed to Mac Calendar:**
+    -   Open the **Calendar** app on your Mac.
+    -   From the menu bar, choose **File** > **New Calendar Subscription...**
+    -   Paste your public feed URL into the "Calendar URL" field and click **Subscribe**.
+    -   On the next screen, you can set the calendar name, color, and most importantly, the **Auto-refresh** frequency. Setting this to "Every hour" will keep the schedule much more current than Google Calendar.
+    -   Click **OK**.
+    -   
 ## How It Works
 
 The server uses a few key libraries to accomplish its task:
