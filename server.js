@@ -4,7 +4,7 @@
 
 const express = require('express');
 const axios = require('axios');
-const cheerio =require('cheerio');
+const cheerio = require('cheerio');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment-timezone');
 
@@ -34,9 +34,17 @@ async function getMlbSchedule() {
         scheduleSections.forEach(selector => {
             $(selector).each((i, section) => {
                 $(section).find('p > b').each((j, dateElement) => {
-                    const dayAndMonth = $(dateElement).text().trim();
-                    const currentDateStr = `${dayAndMonth}, ${currentYear}`;
-                    console.log(`[Scraper Debug] Found Date: ${currentDateStr}`);
+                    const dayAndMonthText = $(dateElement).text().trim();
+
+                    // DATA CORRECTION LOGIC:
+                    // To handle typos on the source page (e.g., wrong weekday),
+                    // we split the string and only use the month and day.
+                    const dateParts = dayAndMonthText.split(',');
+                    // Takes the "Month Day" part and ignores the "Weekday" part.
+                    const monthAndDay = dateParts.length > 1 ? dateParts[1].trim() : dateParts[0].trim();
+                    
+                    const currentDateStr = `${monthAndDay}, ${currentYear}`;
+                    console.log(`[Scraper Debug] Found Date (Corrected): ${currentDateStr}`);
 
                     // Find the next sibling div which contains the game info
                     const gameDiv = $(dateElement).closest('p').next('div');
@@ -54,8 +62,8 @@ async function getMlbSchedule() {
                             console.log(`[Scraper Debug] Found Teams: ${team1} vs ${team2}, Time: ${timeStr}`);
                             
                             const fullDateStr = `${currentDateStr} ${timeStr}`;
-                            // Use moment-timezone to parse the date string in the correct timezone.
-                            const momentDate = moment.tz(fullDateStr, 'dddd, MMMM D, YYYY h:mm a', timeZone);
+                            // Use a format string that IGNORES the weekday for robust parsing.
+                            const momentDate = moment.tz(fullDateStr, 'MMMM D, YYYY h:mm a', timeZone);
                             const gameDate = momentDate.toDate(); // Convert to a standard JavaScript Date object
 
                             if (!isNaN(gameDate.getTime())) {
