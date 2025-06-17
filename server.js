@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 3000;
 const MLB_URL = 'https://www.mlb.com/live-stream-games/free-game-of-the-day';
 const WATCH_URL = 'https://www.mlb.com/live-stream-games';
 
+// Simple in-memory usage counter
+let hitCounter = 0;
+
 /**
  * Fetches and parses the MLB free games schedule from the official page.
  * @returns {Promise<Array<Object>>} A promise that resolves to an array of game objects.
@@ -137,7 +140,8 @@ function generateIcs(games) {
 
 // Define the route for the calendar feed
 app.get('/mlb-free-games.ics', async (req, res) => {
-    console.log(`[${new Date().toISOString()}] Received request for calendar feed.`);
+    hitCounter++;
+    console.log(`[Usage Tracker] Feed requested. Total hits: ${hitCounter}`);
     
     const games = await getMlbSchedule();
 
@@ -157,7 +161,12 @@ app.get('/mlb-free-games.ics', async (req, res) => {
 
 // A simple root route to confirm the server is running
 app.get('/', (req, res) => {
-    res.send('<h1>MLB Calendar Feed Server</h1><p>To subscribe to the feed, use the URL: <strong>/mlb-free-games.ics</strong></p>');
+    res.send('<h1>MLB Calendar Feed Server</h1><p>To subscribe to the feed, use the URL: <strong>/mlb-free-games.ics</strong></p><p><a href="/status">View Usage Stats</a></p>');
+});
+
+// A new route to display the usage stats
+app.get('/status', (req, res) => {
+    res.send(`<h1>Usage Statistics</h1><p>The calendar feed has been requested <strong>${hitCounter}</strong> times since the server was last started.</p>`);
 });
 
 
