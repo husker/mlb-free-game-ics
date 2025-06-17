@@ -11,6 +11,7 @@ const moment = require('moment-timezone');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MLB_URL = 'https://www.mlb.com/live-stream-games/free-game-of-the-day';
+const WATCH_URL = 'https://www.mlb.com/live-stream-games';
 
 /**
  * Fetches and parses the MLB free games schedule from the official page.
@@ -123,6 +124,8 @@ function generateIcs(games) {
         icsString.push(`DTSTART:${toIcsDate(startDate)}`);
         icsString.push(`DTEND:${toIcsDate(endDate)}`);
         icsString.push(`SUMMARY:${game.summary}`);
+        // Add a URL to the event to link directly to the streaming page
+        icsString.push(`URL:${WATCH_URL}`);
         icsString.push('DESCRIPTION:MLB.TV Free Game of the Day. Schedule is subject to change. Watch live on MLB.TV.');
         icsString.push('END:VEVENT');
     });
