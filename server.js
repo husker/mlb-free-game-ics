@@ -4,9 +4,8 @@
 
 const express = require('express');
 const axios = require('axios');
-const cheerio = require('cheerio');
+const cheerio =require('cheerio');
 const { v4: uuidv4 } = require('uuid');
-// LIBRARY SWAP: Replaced date-fns-tz with moment-timezone for better Node.js compatibility.
 const moment = require('moment-timezone');
 
 const app = express();
@@ -55,7 +54,7 @@ async function getMlbSchedule() {
                             console.log(`[Scraper Debug] Found Teams: ${team1} vs ${team2}, Time: ${timeStr}`);
                             
                             const fullDateStr = `${currentDateStr} ${timeStr}`;
-                            // USAGE FIX: Use moment-timezone to parse the date string in the correct timezone.
+                            // Use moment-timezone to parse the date string in the correct timezone.
                             const momentDate = moment.tz(fullDateStr, 'dddd, MMMM D, YYYY h:mm a', timeZone);
                             const gameDate = momentDate.toDate(); // Convert to a standard JavaScript Date object
 
@@ -152,7 +151,7 @@ app.get('/', (req, res) => {
 
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-    console.log(`Calendar feed available at http://localhost:${PORT}/mlb-free-games.ics`);
+// RENDER FIX: Bind to '0.0.0.0' to make the service available externally.
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
